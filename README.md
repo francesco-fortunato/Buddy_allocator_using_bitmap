@@ -1,2 +1,1 @@
-# progetto-sistemi-operativi
-Buddy allocator using bitmap
+# Buddy allocator using bitmap
