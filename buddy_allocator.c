@@ -6,22 +6,29 @@
 // these are trivial helpers to support you in case you want
 // to do a bitmap implementation
 int levelIdx(size_t idx){
-  return (int)floor(log2(idx));
+    return (int)floor(log2(idx+1));
 };
 
-int buddyIdx(int idx){
-  if (idx&0x1){
-    return idx-1;
-  }
-  return idx+1;
+int buddyIdx(int idx){ //fratello
+  if (idx == 0)
+    return 0; //0 non ha fatelli
+  else if (idx&0x1)
+    return idx + 1; //il fratello di 1 è 2 e viceversa
+  return idx - 1;
 }
 
 int parentIdx(int idx){
-  return idx/2;
+    return (int)(idx-1)/2;
 }
 
+//ritorna il primo indice del livello 
+int firstIdx(int level){
+  return (1 << level)-1; //2^level -1
+}
+
+//ritorna lo scarto tra idx e il primo indice del livello
 int startIdx(int idx){
-  return (idx-(1<<levelIdx(idx)));
+    return (idx-(firstIdx(levelIdx(idx))));//idx-firstidx(level(idx))
 }
 
 // stampo a schermo l'albero della bitmap
@@ -32,7 +39,7 @@ void Bitmap_print(BitMap *bit_map){
     for (int i = 0; i < bit_map->num_bits; i++){  
         if (remain_to_print == 0){ 
             if(lvl==tot) break;
-            printf("\nLivello %d \t", ++lvl);     //indice del primo elemento del livello: i
+            printf("\nLivello %d \t", ++lvl, i);     //indice del primo elemento del livello: i
             for (int j = 0; j < (1 << tot) - (1 << lvl); j++) printf(" "); //stampa spazi
             remain_to_print = 1 << lvl;
         }
@@ -88,19 +95,78 @@ int BuddyAllocator_init(BuddyAllocator* alloc,
     Bitmap_print(&alloc->bitmap);
     printf("\n<------------------------------------------------------------------------------------->\n");
     return 1;
-
 };
 
 
 //allocates memory
 void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
     //DA IMPLEMENTARE
-    return NULL;
-};
+    printf("\nTENTO DI ALLOCARE %d bytes\n", size);
+    size += sizeof(int); //sizeof(int) byte usati per l'indice della bitmap
+    //controllo sulla dimensione
+    if (alloc->buffer_size < size) {
+        printf("\nIl blocco da allocare con size %d è più grande di tutta la memoria disponibile!\n", size);
+        return NULL;
+    }
 
+    //determiniamo il livello della pagina partendo dal livello più basso
+    int level_new_block = alloc->num_levels;
+    int start_size = alloc->min_bucket_size;
+    for (int i = 0; i<level_new_block; i++){
+      if (start_size >= size){  //se il la dimensione della memoria richiesta è minore del blocco più piccolo:
+        break;
+      }
+      else{ //altrimenti saliamo di livello
+        start_size = start_size*2;  //al livello successivo avremo il doppio del bucket precedente
+        level_new_block = level_new_block - 1; //saliamo di livello
+      }
+    }
+    printf("\nLIVELLO BLOCCO SCELTO: %d", level_new_block);
+
+    //troviamo un blocco libero nel livello scelto
+    int freeidx=-1;  //free rimarrà -1 se non troviamo nessun blocco libero, altrimenti sarà l'indice del nostro blocco libero
+    int j;
+    for(j = firstIdx(level_new_block); j < firstIdx(level_new_block+1); j++){
+      if (!BitMap_bit(&alloc->bitmap, j)){ //se troviamo un blocco libero
+        freeidx=j;
+        break;
+      }
+    }  //se dopo il ciclo for non avremo ottenuto nessun blocco libero ritorneremo NULL
+
+    if(freeidx<0){
+      printf("Non ci sono blocchi liberi");
+      return NULL;
+    }
+
+    //settiamo a 1 il valore del blocco di indice freeidx e i suoi antenati
+    Set_status_parents(&alloc->bitmap, freeidx, 1);
+    Set_status_children(&alloc->bitmap, freeidx, 1);
+
+    //restituiamo l'indirizzo
+    char *indirizzo = alloc->buffer + startIdx(freeidx) * start_size;
+    ((int *)indirizzo)[0]=freeidx; //insieme all'indirizzo passiamo l'indice trovato, che ci sarà utile per eseguire la free
+    printf("\nAllocato un nuovo blocco di dimensione %d al livello %d utilizzando un blocco di dimensioni %d.\nIndice %d, puntatore %p\n", size, level_new_block, start_size, freeidx, indirizzo+sizeof(int));
+    printf("Albero BITMAP dopo l'allocazione:\n");
+    Bitmap_print(&alloc->bitmap);
+    return (void *)(indirizzo + sizeof(int));
+};
 
 //releases allocated memory
 void BuddyAllocator_free(BuddyAllocator *alloc, void *mem){
-    //DA IMPLEMENTARE
-    return NULL;
-};
+  //DA IMPLEMENTARE
+}
+
+void Set_status_parents(BitMap *bit_map, int bit_num, int status){
+  BitMap_setBit(bit_map, bit_num, status);
+  if (bit_num != 0){
+    Set_status_parents(bit_map, parentIdx(bit_num), status);
+  }
+}
+
+void Set_status_children(BitMap *bit_map, int bit_num, int status){
+  if (bit_num < bit_map->num_bits){
+    BitMap_setBit(bit_map, bit_num, status);
+    Set_status_children(bit_map, bit_num * 2 + 1, status);
+    Set_status_children(bit_map, bit_num * 2 + 2, status);
+  }
+}
