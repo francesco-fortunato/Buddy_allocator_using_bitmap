@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 514
 #define BUDDY_LEVELS 6
 #define MEMORY_SIZE 128
 #define MIN_BUCKET_SIZE (BUFFER_SIZE>>(BUDDY_LEVELS))

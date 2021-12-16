@@ -64,6 +64,12 @@ int BuddyAllocator_init(BuddyAllocator* alloc,
   
     assert ("MEMORIA PER LA BITMAP INSUFFICIENTE!" && bitmap_buf_size>=BitMap_getBytes(num_bits));
     
+    //Nel caso non si usi una potenza di 2, verrà utilizzata meno memoria rispetto a quella disponibile
+    if (levelIdx(alloc_buf_size) != log2(alloc_buf_size)){
+      printf("LA MEMORIA DEDICATA AL BUFFER, OVVERO %d, NON E' UNA POTENZA DI DUE. \nVERRANNO UTILIZZATI SOLO %d BYTES DEI %d FORNITI.\n", alloc_buf_size, min_bucket_size << num_levels, alloc_buf_size);
+      alloc_buf_size = min_bucket_size << num_levels; //la dimensione massima effettiva che può gestire
+    }
+
     // we need room also for level 0
     alloc->num_levels=num_levels;
     alloc->buffer = alloc_buf;
