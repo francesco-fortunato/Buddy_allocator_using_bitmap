@@ -39,7 +39,7 @@ void Bitmap_print(BitMap *bit_map){
     for (int i = 0; i < bit_map->num_bits; i++){  
         if (remain_to_print == 0){ 
             if(lvl==tot) break;
-            printf("\nLivello %d \t", ++lvl, i);     //indice del primo elemento del livello: i
+            printf("\nLivello %d \t", ++lvl);     //indice del primo elemento del livello: i
             for (int j = 0; j < (1 << tot) - (1 << lvl); j++) printf(" "); //stampa spazi
             remain_to_print = 1 << lvl;
         }
