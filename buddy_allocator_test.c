@@ -111,5 +111,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-
-//\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m
