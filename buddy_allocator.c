@@ -122,6 +122,10 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
       level_new_block=0;
       start_size = alloc->buffer_size; 
     } 
+    else if(size<=(alloc->buffer_size)/2 && size>(alloc->buffer_size)/4){
+      level_new_block=1;
+      start_size = (alloc->buffer_size)/2; 
+    }
     else{    //determiniamo il livello della pagina partendo dal livello più basso
       level_new_block = alloc->num_levels;
       start_size = alloc->min_bucket_size;
@@ -134,8 +138,8 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
           level_new_block = level_new_block - 1; //saliamo di livello
         }
       }
-      level_new_block = level_new_block - 1;
-      start_size = start_size*2;
+      //level_new_block = level_new_block - 1;
+      //start_size = start_size*2;
     }
     
 
