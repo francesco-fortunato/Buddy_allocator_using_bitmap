@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 
     printf("\n\033[35m%s|memory request\033[0m\n", getDate());
     void *p2 = BuddyAllocator_malloc(&alloc, 123);
-    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p1);
+    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p2);
 
 
     printf("\n<---------------------------------------------------------------------------------------->\n");
@@ -101,13 +101,15 @@ int main(int argc, char** argv) {
 
     printf("\n\033[35m%s|memory request\033[0m\n", getDate());
     void *p3 = BuddyAllocator_malloc(&alloc, 252);
-    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p1);
+    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p3);
 
     printf("\n<---------------------------------------------------------------------------------------->\n");
     sleep(3);
 
     printf("\n\n\033[32m%s|memory release\033[0m\n", getDate());
     BuddyAllocator_free(&alloc, p3);
+
+    printf("\n<---------------------------------------------------------------------------------------->\n");
 
     return 0;
 }
