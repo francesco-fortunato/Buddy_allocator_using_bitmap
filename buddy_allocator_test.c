@@ -184,8 +184,6 @@ int main(int argc, char** argv) {
     BuddyAllocator_free(&alloc, p4);
 
     printf("\n<---------------------------------------------------------------------------------------->\n");
-    sleep(3);
-
 
     return 0;
 }
