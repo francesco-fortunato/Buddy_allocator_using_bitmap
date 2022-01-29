@@ -4,10 +4,9 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#define BUFFER_SIZE 1024
-#define BUDDY_LEVELS 6
+#define BUFFER_SIZE 1025
+#define BUDDY_LEVELS 5
 #define MEMORY_SIZE 256
-#define MIN_BUCKET_SIZE (BUFFER_SIZE>>(BUDDY_LEVELS))
 
 #define UTIME (uint64_t)time(NULL)
 

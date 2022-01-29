@@ -72,7 +72,7 @@ int BuddyAllocator_init(BuddyAllocator* alloc,
     }
     
     //Generazione del numero di bit necessari per la bit_map
-    int num_bits = (1 << (num_levels + 1)) - 1 ; // questo sarà anche il massimo numero di allocazioni possibili
+    int num_bits = (1 << (num_levels + 1)) - 1 ; 
   
     assert ("MEMORIA PER LA BITMAP INSUFFICIENTE!" && bitmap_buf_size>=BitMap_getBytes(num_bits));
     
