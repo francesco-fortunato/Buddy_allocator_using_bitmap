@@ -191,7 +191,7 @@ void BuddyAllocator_free(BuddyAllocator *alloc, void *mem){
     return;
   }
   
-  printf("\nLibero il blocco \033[34m%p\033[0m. . .\n", mem);
+  printf("\nLibero il blocco puntato da \033[34m%p\033[0m . . .\n", mem);
 
   // we retrieve the buddy from the system
   int *p = (int *)mem;
