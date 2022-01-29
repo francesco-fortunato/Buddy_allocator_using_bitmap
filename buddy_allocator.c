@@ -105,13 +105,16 @@ int BuddyAllocator_init(BuddyAllocator* alloc,
 
 //allocates memory
 void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
-    //DA IMPLEMENTARE
+    if (size==0){
+      printf("NON POSSO ALLOCARE 0 BYTES!");
+      return NULL;
+    }
     printf("\nTENTO DI ALLOCARE %d BYTES + %ld BYTES DEDICATI ALL'INDICE (TOT. %ld) . . .\n", size, sizeof(int), size+sizeof(int));
     size += sizeof(int); //sizeof(int) byte usati per l'indice della bitmap
     //controllo sulla dimensione
     
-    if (alloc->buffer_size < size) {
-        printf("\nIl blocco da allocare con size %d è più grande di tutta la memoria disponibile!\n", size);
+    if ((alloc->buffer_size) < size) {
+        printf("\nIl blocco da allocare con size %d è più grande di tutta la memoria disponibile! MEMORY FAULT.\n", size);
         return NULL;
     }
 
@@ -165,7 +168,7 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
 
     
     if(freeidx<0){
-      printf("Non ci sono blocchi liberi");
+      printf("\nNon ci sono blocchi liberi. MEMORY FAULT. \n");
       return NULL;
     }
 

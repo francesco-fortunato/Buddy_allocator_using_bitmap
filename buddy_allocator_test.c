@@ -65,14 +65,16 @@ int main(int argc, char** argv) {
 
     sleep(2);
     
-    
+    //***
+
+
 
     printf("\n<----------------------------------TEST FULL ALLOC------------------------------------->\n\n");
 
     sleep(2);
 
     printf("\n\033[35m%s|memory request\033[0m\n", getDate());
-    void *p1 = BuddyAllocator_malloc(&alloc, 124);
+    void *p1 = BuddyAllocator_malloc(&alloc, 125);
     printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p1);
 
     
@@ -128,14 +130,15 @@ int main(int argc, char** argv) {
     printf("\n\033[32m%s|memory release\033[0m\n", getDate());
     BuddyAllocator_free(&alloc, p3);
 
-    printf("\n<---------------------------------------------------------------------------------------->\n");
-
-    sleep(2);
-
-
+    printf("\n<-------------------------------------FINE TEST 1----------------------------------------->\n\n");
     
+    sleep(2);
+    /***/
+    //***
 
     printf("\n<----------------------------------------TEST 2------------------------------------------->\n\n");
+
+    sleep(2);
 
     printf("\n\033[35m%s|memory request\033[0m\n", getDate());
     void *p4 = BuddyAllocator_malloc(&alloc, 14);
@@ -174,7 +177,7 @@ int main(int argc, char** argv) {
 
     printf("\n\033[35m%s|memory request\033[0m\n", getDate());
     void *p11 = BuddyAllocator_malloc(&alloc, 18);
-    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p8);
+    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p11);
 
     printf("\n<---------------------------------------------------------------------------------------->\n");
     sleep(3);
@@ -212,7 +215,61 @@ int main(int argc, char** argv) {
     printf("\n\033[32m%s|memory release\033[0m\n", getDate());
     BuddyAllocator_free(&alloc, p4);
 
+    printf("\n<-------------------------------------FINE TEST 2----------------------------------------->\n\n");
+
+    sleep(2);
+    /***/
+
+   //**
+    printf("\n<-------------------------------------TEST 3 ERRORI--------------------------------------->\n\n");
+
+
+    printf("ALLOCO UN BLOCCO MAGGIORE DELLA DIMENSIONE TOTALE\n"); 
+    
+    sleep(2);
+
+    printf("\n\033[35m%s|memory request\033[0m\n", getDate());
+    void *p12 = BuddyAllocator_malloc(&alloc, 10000);
+    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p12);
+
     printf("\n<---------------------------------------------------------------------------------------->\n");
+
+    
+
+    printf("RIEMPIO LA MEMORIA E PROVO AD ALLOCARE ALTRA MEMORIA\n");
+    
+    sleep(2);
+
+    printf("\n\033[35m%s|memory request\033[0m\n", getDate());
+    void *p13 = BuddyAllocator_malloc(&alloc, 1020);
+    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p13);
+
+    printf("\n<---------------------------------------------------------------------------------------->\n");
+
+    sleep(2);
+
+    printf("\n\033[35m%s|memory request\033[0m\n", getDate());
+    void *p14 = BuddyAllocator_malloc(&alloc, 1020);
+    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p14);
+
+    printf("\n<---------------------------------------------------------------------------------------->\n");
+    sleep(3);
+
+    printf("\n\033[32m%s|memory release\033[0m\n", getDate());
+    BuddyAllocator_free(&alloc, p13);
+
+    printf("\n<---------------------------------------------------------------------------------------->\n");
+
+
+    printf("PROVO AD ALLOCARE 0 BYTES\n");
+
+    sleep(2);
+
+    printf("\n\033[35m%s|memory request\033[0m\n", getDate());
+    void *p16 = BuddyAllocator_malloc(&alloc, 0);
+    printf("\n\033[93m%s|memory address [\033[0m\033[34m%p\033[0m\033[93m]\033[0m\n", getDate(), p16);
+
+/***/
 
     return 0;
 }
