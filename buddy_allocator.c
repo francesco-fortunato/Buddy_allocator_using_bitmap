@@ -106,7 +106,7 @@ int BuddyAllocator_init(BuddyAllocator* alloc,
 //allocates memory
 void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
     //DA IMPLEMENTARE
-    printf("\nTENTO DI ALLOCARE %d BYTES . . .\n", size);
+    printf("\nTENTO DI ALLOCARE %d BYTES + %ld BYTES DEDICATI ALL'INDICE (TOT. %ld) . . .\n", size, sizeof(int), size+sizeof(int));
     size += sizeof(int); //sizeof(int) byte usati per l'indice della bitmap
     //controllo sulla dimensione
     
@@ -118,6 +118,7 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
     int level_new_block;
     int start_size;
 
+    
     if (size>(alloc->buffer_size)/2){  //se la dimensione richiesta supera la metà della memoria totale, allora sarà il primo livello
       level_new_block=0;
       start_size = alloc->buffer_size; 
@@ -129,7 +130,7 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
     else{    //determiniamo il livello della pagina partendo dal livello più basso
       level_new_block = alloc->num_levels;
       start_size = alloc->min_bucket_size;
-      for (int i = 0; i<level_new_block; i++){
+      for (int i = 0; i<=level_new_block; i++){
         if (start_size >= size){  //se la dimensione della memoria richiesta è minore del blocco più piccolo:
           break;
         }
@@ -138,8 +139,6 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
           level_new_block = level_new_block - 1; //saliamo di livello
         }
       }
-      //level_new_block = level_new_block - 1;
-      //start_size = start_size*2;
     }
     
 
@@ -185,9 +184,15 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size) {
 
 //releases allocated memory
 void BuddyAllocator_free(BuddyAllocator *alloc, void *mem){
+  
+
+  if (mem==NULL){
+    printf("Non posso liberare un blocco ancora non allocato!");
+    return;
+  }
+  
   printf("\nLibero il blocco \033[34m%p\033[0m. . .\n", mem);
 
-  assert("Non posso liberare un blocco ancora non allocato!" && mem); //NO NULL
   // we retrieve the buddy from the system
   int *p = (int *)mem;
   int idx_to_free = p[-1];
