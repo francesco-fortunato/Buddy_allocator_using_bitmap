@@ -17,8 +17,8 @@ int buddyIdx(int idx){ //fratello
   return idx - 1;
 }
 
-int parentIdx(int idx){
-    return (int)(idx-1)/2;
+int parentIdx(int idx){ //padre
+    return (int)(idx-1)/2;  
 }
 
 //ritorna il primo indice del livello 
@@ -26,7 +26,7 @@ int firstIdx(int level){
   return (1 << level)-1; //2^level -1
 }
 
-//ritorna lo scarto tra idx e il primo indice del livello
+//ritorna l'offset tra il buddy di indice 'idx' e il primo indice del livello
 int startIdx(int idx){
     return (idx-(firstIdx(levelIdx(idx))));//idx-firstidx(level(idx))
 }
@@ -72,14 +72,15 @@ int BuddyAllocator_init(BuddyAllocator* alloc,
     }
     
     //Generazione del numero di bit necessari per la bit_map
-    int num_bits = (1 << (num_levels + 1)) - 1 ; 
+    int num_bits = (1 << (num_levels + 1)) - 1 ;  //(2^(num_levels+1))-1
   
     assert ("MEMORIA PER LA BITMAP INSUFFICIENTE!" && bitmap_buf_size>=BitMap_getBytes(num_bits));
     
     //Nel caso non si usi una potenza di 2, verrà utilizzata meno memoria rispetto a quella disponibile
     if (levelIdx(alloc_buf_size) != log2(alloc_buf_size)){
       printf("LA MEMORIA DEDICATA AL BUFFER, OVVERO %d, NON E' UNA POTENZA DI DUE. \nVERRANNO UTILIZZATI SOLO %d BYTES DEI %d FORNITI.\n", alloc_buf_size, min_bucket_size << num_levels, alloc_buf_size);
-      alloc_buf_size = min_bucket_size << num_levels; //la dimensione massima effettiva che può gestire
+      alloc_buf_size = min_bucket_size << num_levels; //la dimensione massima effettiva che può gestire 
+                                                      //alloc_buf_size = min_bucket_size * 2^(num_levels)
     }
 
     // we need room also for level 0
