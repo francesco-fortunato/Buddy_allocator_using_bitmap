@@ -20,12 +20,13 @@ Quando viene richiesto un blocco di memoria, si calcola innanzitutto il livello 
 $ git clone https://github.com/francesco-fortunato/ProgettoSO.git
 $ cd /ProgettoSO
 $ make
-$ ./buddy_allocator_test <x>
+$ ./buddy_allocator_test x
 ```
-dove <x> è un numero da 0 a 3:
+dove x è un numero da 0 a 3:
+  
   0. Per eseguire tutti i test
   1. Per eseguire un test in cui viene allocata tutta la memoria disponibile
   2. Per eseguire un test in cui vengono allocati blocchi sparsi
   3. Per eseguire un test in cui vengono gestiti gli errori (richiesta di memoria maggiore di quella disponibile, richiesta di deallocazione di un blocco di memoria non allocato, richiesta di allocazione di 0 bytes)
 
-Modificare il file sorgente buddy_allocator_test.c per aggiungere altri test e ricompilare con l'istruzione make prima di eseguire nuovamente l'istruzione ./buddy_allocator_test <x>
+Modificare il file sorgente buddy_allocator_test.c per aggiungere altri test, rimuoverne o modificarli, e ricompilare con l'istruzione make prima di eseguire nuovamente l'istruzione ./buddy_allocator_test x
