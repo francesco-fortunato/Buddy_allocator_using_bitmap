@@ -2,11 +2,11 @@
 
 Progetto per il corso di Sistemi Operativi dell'anno accademico 2020/2021, Università La Sapienza.
 
-## Cos'è
+## What
 
 Implementazione di un Buddy Allocator utilizzando una Bitmap.
 
-## Come funziona
+## How
 
 Il funzionamento è quello di un tipico Buddy Allocator: la memoria viene divisa ricorsivamente in 2 (creando di fatto un albero binario) finché non si raggiunge un livello tale per cui la dimensione del buddy è la più piccola possibile per soddisfare la richiesta di allocazione. Dunque, se, ad esempio, avessimo 512 KB di memoria disponibile e ricevessimo una richiesta di 64 KB, la memoria verrebbe divisa una prima volta ottenendo due partizioni da 256 KB, un'ulteriore volta ottenendo 4 partizioni da 128 KB, e un'altra volta per ottenere 8 partizioni da 64 KB. A questo punto, poiché un'ulteriore divisione porterebbe ad avere 16 partizioni da 32 KB l'una (memoria più piccola di quella richiesta), ci si fermerà al livello 3 e si allocherà un blocco i della dimensione di 64KB, rendendo di fatto occupati tutti gli antenati e tutti i discendenti di i.
 L'albero binario ottenuto dalla divisione ricorsiva della memoria viene implementato grazie ad una bitmap, ovvero una mappa (un array) di bit, in cui ogni nodo avrà valore 0 se il blocco relativo a quel nodo è libero, 1 se invece è stato allocato. In questa implementazione è stata utilizzata la convenzione secondo la quale il primo indice della bitmap (ovvero la radice dell'albero) vale 0.
