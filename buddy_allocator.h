@@ -26,8 +26,11 @@ void* BuddyAllocator_malloc(BuddyAllocator* alloc, int size);
 //releases allocated memory
 void BuddyAllocator_free(BuddyAllocator* alloc, void* mem);
 
+//setta lo stato dei genitori a status
 void Set_status_parents(BitMap *bit_map, int bit_num, int status);
 
+//setta lo stato dei discendenti a status
 void Set_status_children(BitMap *bit_map, int bit_num, int status);
 
+//funzione per ricompattare i vari livelli
 void merge(BitMap *bitmap, int idx);
