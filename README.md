@@ -1,6 +1,6 @@
 # Buddy Allocator using Bitmap
 
-Progetto per il corso di Sistemi Operativi dell'anno accademico 2020/2021, Università La Sapienza.
+Progetto per il corso di Sistemi Operativi tenuto dal prof. Grisetti Giorgio e dalla tutor Bazzana Barbara dell'anno accademico 2020/2021, Università La Sapienza.
 
 ## What
 
